@@ -15,17 +15,18 @@ const password = encodeURIComponent( "1993");
     dotenv.config(); // Load .env file
 const portnum=3005;
 
-
 app.use(cors({
     origin: "http://localhost:3000",
-    origin: "https://web.telegram.org",
+   
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }));
 
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 app.use('/api/items',iroutes);//requests starting with /api/items wil be directed to iroutes/itemsRoutes module
+
 
 tryconnect();
 startbot();
@@ -49,7 +50,6 @@ Adminstartbot();
 //         email,
 //         age
 //     });
-
 //     try {
 //         await newUser.save(); // Save the user to the database
 //         res.status(201).send("User added successfully");

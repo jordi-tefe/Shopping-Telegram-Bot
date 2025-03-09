@@ -44,6 +44,7 @@ function startbot() {
             ]).resize()
         );
     });
+    
 
     bot.hears("🛍️ View Product", async (ctx) => {
         const TGUsername = ctx.from.username;
@@ -54,7 +55,7 @@ function startbot() {
         }
 
         // Generate a unique session link for the user
-        const sessionLink = `${WEBSITE_URL}?username=${user.Username}`;
+        const sessionLink = `${WEBSITE_URL}?username=${user.Username}&phone=${user.Phonenumber}`;
     
         console.log("Generated URL for user:", sessionLink); // ✅ Debugging step
 
