@@ -13,8 +13,8 @@ const password = encodeURIComponent( "1993");
     const dotenv = require("dotenv");
 
     dotenv.config(); // Load .env file
-const portnum=3005;
-
+const portnum=process.env.PORT ;
+// const TOKEN = process.env.TG_TOKEN;
 app.use(cors({
     origin: "http://localhost:3000",
    

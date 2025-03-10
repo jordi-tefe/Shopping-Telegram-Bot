@@ -3,8 +3,11 @@ const { v4: uuidv4 } = require("uuid");
 const User = require("./Models/Customer");
 const Product = require("./Models/Product");
 const Admin = require("./Models/Admin");
+const dotenv = require("dotenv");
 
-const TOKEN = "7676624103:AAEZIVQPKCHZn9ardi9cIczFxv5w-_potKA";
+dotenv.config(); // Load .env file
+
+const TOKEN = process.env.TGAdminBot_TOKEN;
 const bot = new Telegraf(TOKEN);
 
 // Define Admin Username (Change this to your real admin username)
@@ -29,7 +32,7 @@ function Adminstartbot() {
 
     ctx.reply(`✅ Welcome, Admin ${TGfirstname} (@${TGUsername})!`,
         Markup.keyboard([
-            ["➕ Add Admin", "📦 Manage Products"],
+            ["➕ Manage Admins 🗑", "📦 Manage Products"],
             ["🛒 View Orders", "📊 Sales Report"]
         ]).resize()
     );
@@ -39,18 +42,29 @@ function Adminstartbot() {
    bot.hears("📦 Manage Products", (ctx) => {
     ctx.reply("🔹 Select an action:",
         Markup.keyboard([
-            ["➕ Add Product", "✏️ Edit Product"],
+          
             ["🗑 Delete Product", "📦 View Products"],
             ["⬅️ Back"]
         ]).resize()
     );
 });
+ // 📌 Handle "📦 Manage Products" Button Click
+ bot.hears("➕ Manage Admins 🗑", (ctx) => {
+    ctx.reply("🔹 Select an action:",
+        Markup.keyboard([
+            ["➕ Add Admin"],
+            ["🗑 Delete Admin", "📦 View Admins"],
+            ["⬅️ Back"]
+        ]).resize()
+    );
+});
+
 
  // 📌 Handle "⬅️ Back" Button to Return to Main Menu
  bot.hears("⬅️ Back", (ctx) => {
   ctx.reply("🔹 Returning to main menu...",
       Markup.keyboard([
-          ["➕ Add Admin", "📦 Manage Products"],
+          ["➕ Manage Admins 🗑", "📦 Manage Products"],
           ["🛒 View Orders", "📊 Sales Report"]
       ]).resize()
   );
@@ -80,25 +94,34 @@ bot.hears("➕ Add Product", (ctx) => {
   });
 });
 
+// 📌 View Admins
+bot.hears("📦 View Admins", async (ctx) => {
+    const TGUsername = ctx.from.username;
+    const admin = await Admin.findOne({ username: TGUsername });
 
-// 📌 Delete Product
-// bot.hears("🗑 Delete Product", (ctx) => {
-//   ctx.reply("🔹 Send the **product name** you want to delete.");
-//   bot.on("text", (ctx) => {
-//       const productName = ctx.message.text.trim();
-//       Product.findOneAndDelete({ name: productName })
-//           .then((deletedProduct) => {
-//               if (!deletedProduct) {
-//                   return ctx.reply(`❌ No product found with name: **${productName}**`);
-//               }
-//               ctx.reply(`✅ Product **${productName}** deleted successfully!`);
-//           })
-//           .catch((err) => {
-//               console.error("Error deleting product:", err);
-//               ctx.reply("❌ Failed to delete product.");
-//           });
-//   });
-// });
+    if (!admin) {
+        return ctx.reply("❌ You do not have permission to view admins.");
+    }
+
+    // Fetch all admins from the database
+    Admin.find()
+        .then((admins) => {
+            if (admins.length === 0) {
+                return ctx.reply("📦 No admins found.");
+            }
+
+            let message = "📦 **Admin List:**\n\n";
+            admins.forEach((a) => {
+                message += `🛠 Admin: @${a.username}\n\n`;
+            });
+
+            ctx.reply(message);
+        })
+        .catch((err) => {
+            console.error("Error fetching admins:", err);
+            ctx.reply("❌ Failed to fetch admins.");
+        });
+});
 
 // 📌 View Products
 bot.hears("📦 View Products", (ctx) => {
@@ -123,61 +146,14 @@ bot.hears("📦 View Products", (ctx) => {
 
 const editingProduct = {}; // Stores user states for editing
 
-// // 📌 Edit Product
-// bot.hears("✏️ Edit Product", (ctx) => {
-//     const adminId = ctx.from.id; // Identify the admin using Telegram ID
-//     ctx.reply("🔹 Send the **product name** you want to edit.");
-
-//     // Store the admin state as "waiting for product name"
-//     editingProduct[adminId] = { step: "waiting_for_product" };
-// });
-
-// // Listen for the product name
-// bot.on("text", async (ctx) => {
-//     const adminId = ctx.from.id;
-//     if (!editingProduct[adminId]) return; // Ignore if no active state
-
-//     if (editingProduct[adminId].step === "waiting_for_product") {
-//         const productName = ctx.message.text.trim();
-//         try {
-//             const product = await Product.findOne({ name: productName });
-//             if (!product) {
-//                 delete editingProduct[adminId]; // Clear state
-//                 return ctx.reply(`❌ No product found with name: **${productName}**`);
-//             }
-
-//             ctx.reply("🔹 Send the new details:\n\n`Name | Category | Description | Price | ImageURL`");
-//             editingProduct[adminId] = { step: "waiting_for_details", product }; // Update state
-//         } catch (error) {
-//             console.error("Error finding product:", error);
-//             ctx.reply("❌ Failed to find product.");
-//         }
-//     } else if (editingProduct[adminId].step === "waiting_for_details") {
-//         const parts = ctx.message.text.split("|").map(p => p.trim());
-//         if (parts.length !== 5) {
-//             return ctx.reply("⚠️ Incorrect format! Use: `Name | Category | Description | Price | ImageURL`");
-//         }
-
-//         const [newName, category, description, price, imageUrl] = parts;
-//         if (isNaN(price)) {
-//             return ctx.reply("⚠️ Price must be a number!");
-//         }
-
-//         try {
-//             await Product.updateOne(
-//                 { _id: editingProduct[adminId].product._id },
-//                 { name: newName, category, description, price: Number(price), imageUrl }
-//             );
-//             ctx.reply(`✅ Product **${editingProduct[adminId].product.name}** updated successfully!`);
-//             delete editingProduct[adminId]; // Clear state after update
-//         } catch (error) {
-//             console.error("Error updating product:", error);
-//             ctx.reply("❌ Failed to update product.");
-//         }
-//     }
-// });
 
 const adminState = {}; // Store states for each admin (edit & delete)
+// 📌 Handle "🗑 Delete Admin" Button
+bot.hears("🗑 Delete Admin", (ctx) => {
+    const adminId = ctx.from.id;
+    adminState[adminId] = { action: "Admin_deletion" }; // Set state for deleting an admin
+    ctx.reply("🔹 Send the **username** without *@* of the admin you want to delete.");
+});
 
 // 📌 Handle "🗑 Delete Product" Button
 bot.hears("🗑 Delete Product", (ctx) => {
@@ -193,16 +169,6 @@ bot.hears("✏️ Edit Product", (ctx) => {
     ctx.reply("🔹 Send the **product name** you want to edit.");
 });
 
-bot.hears("➕ Add Admin", async (ctx) => {
-    const admin = await Admin.findOne({ username: TGUsername });
-
-    if (!admin) {
-        return ctx.reply("❌ You do not have permission to add admins.");
-    }
-    adminState[adminId] = { action: "Add_admin" }; //  waiting for newAdmin name
-
-    ctx.reply("🔹 Send the new admin's username as a reply. Example: `@newadmin`.");
-});
 
 // 📌 Handle Text Input for Both Delete & Edit
 bot.on("text", async (ctx) => {
@@ -212,6 +178,7 @@ bot.on("text", async (ctx) => {
     if (!state) return; // No active state, ignore message
 
     const productName = ctx.message.text.trim();
+    const username = ctx.message.text.trim(); // Username of admin to be deleted
 
     if (state.action === "delete") {
         // Handle Delete Product
@@ -229,23 +196,22 @@ bot.on("text", async (ctx) => {
             ctx.reply("❌ Failed to delete product.");
         }
 
-    } else if (state.action === "edit_step1") {
-        // Step 1: Find the product before editing
-        try {
-            const product = await Product.findOne({ name: productName });
+    } else if (state.action === "Admin_deletion") {
+       // Step 1: Handle Admin Deletion
+       try {
+        // Check if admin exists in the database
+        const deletedAdmin = await Admin.findOneAndDelete({ username });
 
-            if (!product) {
-                delete adminState[adminId]; // Clear state
-                return ctx.reply(`❌ No product found with name: **${productName}**`);
-            }
-
-            adminState[adminId] = { action: "edit_step2", product }; // Move to step 2
-            ctx.reply("🔹 Send the new details in format:\n`Name | Category | Description | Price | ImageURL`");
-        } catch (error) {
-            console.error("Error finding product:", error);
-            ctx.reply("❌ Failed to find product.");
+        if (!deletedAdmin) {
+            delete adminState[adminId]; // Clear state
+            return ctx.reply(`❌ No admin found with username: **${username}**`);
         }
 
+        ctx.reply(`✅ Admin **${username}** has been deleted successfully!`);
+    } catch (error) {
+        console.error("Error deleting admin:", error);
+        ctx.reply("❌ Failed to delete admin.");
+    }
         
     } else if (state.action === "edit_step2") {
         // Step 2: Update Product
@@ -308,47 +274,6 @@ bot.on("text", async (ctx) => {
     });
 });
 
-  bot.command("addadmin", async (ctx) => {
-    try {
-        const TGUsername = ctx.from.username;
-
-        // Check if user is an admin
-        const admin = await Admin.findOne({ username: TGUsername });
-        if (!admin) {
-            return ctx.reply("❌ You do not have permission to add admins.");
-        }else{
-          return ctx.reply(" You do  have permission to add admins.");
-        }
-
-        // Extract new admin username
-        const messageParts = ctx.message.text.split(" ");
-        if (messageParts.length < 2) {
-            return ctx.reply("⚠️ Please provide a username. Example: `/addadmin @newadmin`");
-        }
-
-        const newAdminUsername = messageParts[1].replace("@", "").trim();
-
-        // Check if the username is valid
-        if (!newAdminUsername.match(/^[a-zA-Z0-9_]+$/)) {
-            return ctx.reply("⚠️ Invalid username format. Use only letters, numbers, or underscores.");
-        }
-
-        // Check if admin already exists
-        const existingAdmin = await Admin.findOne({ username: newAdminUsername });
-        if (existingAdmin) {
-            return ctx.reply(`⚠️ @${newAdminUsername} is already an admin.`);
-        }
-
-        // Add new admin to database
-        const newAdmin = new Admin({ username: newAdminUsername });
-        await newAdmin.save();
-
-        ctx.reply(`✅ @${newAdminUsername} has been added as an admin.`);
-    } catch (error) {
-        console.error("Error adding admin:", error);
-        ctx.reply("⚠️ An error occurred while adding the admin.");
-    }
-});
 
   // Start bot with error handling
   bot.launch()

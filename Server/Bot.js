@@ -1,9 +1,12 @@
 const { Telegraf, Markup } = require("telegraf");
 const { v4: uuidv4 } = require("uuid");
 const User = require("./Models/Customer");
+ const dotenv = require("dotenv");
 
-const TOKEN = "7517198367:AAFmuA-P80SUOePtg5xq5b6AuMXdnWgFzr0";
-const bot = new Telegraf(TOKEN);
+    dotenv.config(); // Load .env file
+
+const TOKEN = process.env.TGUserBot_TOKEN;
+const Bot = new Telegraf(TOKEN);
 
 // Your live React website URL (Replace this with your actual link)
 const WEBSITE_URL = "https://l8n8n6b3-3000.uks1.devtunnels.ms/"; 
@@ -11,7 +14,7 @@ const WEBSITE_Checkoutpage_URL = "https://l8n8n6b3-3000.uks1.devtunnels.ms/check
 
 function startbot() {
   console.log("🚀 Bot is starting...");
-    bot.start((ctx) => {
+    Bot.start((ctx) => {
         const TGUsername = ctx.from.username;
         const TGfirstname = ctx.from.first_name;
         ctx.reply(`👋 Hello ${TGfirstname} (@${TGUsername}), we need your phone number to proceed.`,
@@ -21,7 +24,7 @@ function startbot() {
 
     
 
-    bot.on("contact", async (ctx) => {
+    Bot.on("contact", async (ctx) => {
         const TGUsername = ctx.from.username;
         const TGfirstname = ctx.from.first_name;
         const PhoneNo = ctx.message.contact.phone_number;
@@ -46,7 +49,7 @@ function startbot() {
     });
     
 
-    bot.hears("🛍️ View Product", async (ctx) => {
+    Bot.hears("🛍️ View Product", async (ctx) => {
         const TGUsername = ctx.from.username;
         const user = await User.findOne({ Username: TGUsername });
 
@@ -88,7 +91,10 @@ function startbot() {
   // });
 
 
-    bot.launch();
+    Bot.launch()
+    .then(() => console.log("🚀  Bot Started Successfully!"))
+    .catch((err) => console.error(" Failed to start bot:", err));
 }
+
 
 module.exports = startbot;
