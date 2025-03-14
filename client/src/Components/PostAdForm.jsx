@@ -6,13 +6,14 @@ import {categories} from "../db/Jsonfiles"
 
 
 
+
 const PostAd = (username,phoneNo) => {
   // const username="uziiiiii";
   // const phoneNo='0999999999';
 
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
-  
+
   const [quantity, setQuantity] = useState("");
   const [bulkPriceEnabled, setBulkPriceEnabled] = useState(false);
   const [photos, setPhotos] = useState([]);
