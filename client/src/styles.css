@@ -1,0 +1,39 @@
+.navbar {
+    background-color: #223d5a;
+    padding: 15px;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .product-list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .product-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  .product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+  }
+  .product-form input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  .product-form button {
+    background-color: #223d5a;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,168 @@
+:root{
+    --primary-color:#e0c521;
+}
+.card{
+    display: flex;
+    flex-direction:column;
+    justify-content: space-between;
+    width: 150px;
+    height: 250px;
+    border: 2px solid var(--primary-color);
+    padding: 0.5rem 0.3rem;
+    margin: 13px 10px;
+    position: relative;
+}
+
+.card_title{
+    font-weight: 400;
+    text-align: center;
+}
+.card_title.card_price{
+    font-weight: bold;
+}
+.image_container{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+.image_container img{
+    width: 100%;
+    object-fit: cover;
+}
+.btn-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.card_price{
+    text-align: center;
+    display: inline-block;
+}
+.card_badge{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background-color:rgb(227, 112, 30);
+    border-radius: 50%;
+    transform: translate(20px,-20px) scale(1);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid rgb(227, 112, 30);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    animation: scaleanimation 1s ease infinite;
+    opacity: 0.8;
+}
+@keyframes scaleanimation{
+    to{
+        transform: translate(20px,-20px) scale(1.05);
+        opacity: 1;
+    }
+}
+.card_badge--hidden{
+    display: none;
+}
+
+ /* Modal Overlay - Fullscreen background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Make sure it's above other elements */
+  }
+  
+  /* Centered Modal Box */
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 60vh; /* Keep height limited */
+    text-align: center;
+    position: relative;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+    overflow-y: auto; /* Enable scroll if needed */
+  }
+  
+  /* Modal Fade-in Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  
+  /* Adjust modal image size */
+  .modal-image {
+    width: 100%;
+    max-height: 180px; /* Limit image height */
+    object-fit: cover; /* Ensures the image fits well */
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Reduce text size inside the modal for better spacing */
+  .modal-details h2 {
+    font-size: 20px;
+    color: #222;
+  }
+  
+  .modal-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4CAF50;
+  }
+  
+  .seller-info {
+    background: #f8f8f8;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .seller-info h3 {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .seller-info p {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  /* Adjust close button */
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    color: red;
+    transition: 0.3s;
+  }
+  
+  .close-btn:hover {
+    color: darkred;
+  }
+  

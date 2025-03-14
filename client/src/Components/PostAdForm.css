@@ -1,0 +1,181 @@
+/* PostAd.css */
+
+.post-ad-container {
+    max-width: 600px;
+    margin: 2% 0 1% 25%;
+    background: #f3f8fc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-ad-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .clear-button {
+    float: right;
+    font-size: 14px;
+    color: green;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .photo-label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .photo-upload {
+    text-align: center;
+  }
+  
+  .photo-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .file-input {
+    display: none; /* Hides the input field */
+  }
+  
+  .upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .plus {
+    font-size: 24px;
+    color: #888;
+  }
+  
+  .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .plus {
+    font-size: 24px;
+    color: #5cb85c;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .next-button {
+    width: 100%;
+    padding: 12px;
+    background: rgb(89, 89, 250);
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .next-button:disabled {
+    background: #f3f3f3;
+    cursor: not-allowed;
+  }
+  
+  /* Second form */
+  .step-two {
+    background: #ffffff;
+    width: 95%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  .back-button {
+    background: none;
+    border: none;
+    width: fit-content;
+    font-size: 14px;
+    color: green;
+    cursor: pointer;
+  }
+  
+  .form-row {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+  .step-two.form-group{
+    width: 100%;
+
+  }
+  
+  .textarea-field {
+    width: 100%;
+    height: 80px;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .disabled {
+    background: #f3f3f3;
+    cursor: not-allowed;
+  }
+  
+  .bulk-price-disabled {
+    background: #f3f3f3;
+    cursor: not-allowed;
+  }
+  p{
+    color: grey;
+  }
+  /* Make the container responsive */
+@media (max-width: 768px) {
+  .post-ad-container {
+      width: 90%;
+      margin: 2% auto; /* Center it */
+      padding: 15px;
+  }
+}
+
+/* Extra adjustments for very small screens */
+@media (max-width: 480px) {
+  .post-ad-container {
+      width: 95%;
+      padding: 12px;
+  }
+}
+

@@ -1,0 +1,23 @@
+.checkout-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .checkout-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .checkout-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .checkout-total {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
