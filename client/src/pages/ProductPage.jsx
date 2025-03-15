@@ -25,9 +25,10 @@ function ProductPage() {
 
 
 useEffect(()=>{
+
   const fetchProducts = async() => {
     try{
-      const response=await axios.get("http://localhost:3005/api/items");
+      const response=await axios.get("https://chic-enchantment-production.up.railway.app/api/items");
       setProducts(response.data);
 
        // 🔹 Extract unique categories from products
@@ -123,9 +124,9 @@ useEffect(()=>{
     return true;
   });
 
-
   return (
     <>
+
       <h1 >Products</h1>
       <Header username={username} phoneNo={phoneNo} cartItemCount={cartItems.length} />
 
