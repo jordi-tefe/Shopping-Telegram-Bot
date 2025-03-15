@@ -9,7 +9,7 @@ const TOKEN = process.env.TGUserBot_TOKEN;
 const Bot = new Telegraf(TOKEN);
 
 // Your live React website URL (Replace this with your actual link)
-const WEBSITE_URL = "https://chic-enchantment-production.up.railway.app/api/items"; 
+const WEBSITE_URL = process.env.WEB_URL; 
 const WEBSITE_Checkoutpage_URL = "https://l8n8n6b3-3000.uks1.devtunnels.ms/checkout";
 
 function startbot() {
