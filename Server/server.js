@@ -17,7 +17,7 @@ const password = encodeURIComponent( "1993");
 const portnum=process.env.PORT ;
 // const TOKEN = process.env.TG_TOKEN;
 app.use(cors({
-    origin: ["https://l8n8n6b3-3000.uks1.devtunnels.ms/", "https://web.telegram.org"],
+    origin:"*",
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
